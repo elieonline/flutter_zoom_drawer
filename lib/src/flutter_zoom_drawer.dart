@@ -47,7 +47,7 @@ class ZoomDrawer extends StatefulWidget {
     this.androidCloseOnBackTap = false,
     this.moveMenuScreen = true,
     this.disableDragGesture = false,
-    this.isRtl = false,
+    this.isRtl = true,
     this.clipMainScreen = true,
     this.mainScreenTapClose = false,
     this.menuScreenTapClose = false,
