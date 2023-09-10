@@ -42,7 +42,7 @@ class StyleDefaultWidget extends StatelessWidget {
             Container(
               color: shadowLayer1Color ?? drawerShadowsBackgroundColor.withAlpha(60),
             ),
-            angle: (angle == 0.0) ? 0.0 : angle - 8,
+            angle: (angle == 0.0) ? 0.0 : angle - 4,
             scale: .9,
             slide: slidePercent * 2,
           ),
@@ -52,7 +52,7 @@ class StyleDefaultWidget extends StatelessWidget {
             Container(
               color: shadowLayer2Color ?? drawerShadowsBackgroundColor.withAlpha(180),
             ),
-            angle: (angle == 0.0) ? 0.0 : angle - 4.0,
+            angle: (angle == 0.0) ? 0.0 : angle - 2.0,
             scale: .95,
             slide: slidePercent,
           )
