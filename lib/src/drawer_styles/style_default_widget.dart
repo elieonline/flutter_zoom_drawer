@@ -34,7 +34,6 @@ class StyleDefaultWidget extends StatelessWidget {
     const slidePercent = 15.0;
 
     return Stack(
-      alignment: AlignmentDirectional.bottomStart,
       children: [
         menuScreenWidget,
         if (showShadow) ...[

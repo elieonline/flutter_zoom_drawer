@@ -485,7 +485,7 @@ class ZoomDrawerState extends State<ZoomDrawer> with SingleTickerProviderStateMi
       transform: Matrix4.translationValues(xPosition, 0.0, 0.0)
         ..rotateZ(rotationAngle)
         ..scale(scalePercentage, scalePercentage),
-      alignment: widget.isRtl ? Alignment.centerRight : Alignment.bottomLeft,
+      alignment: widget.isRtl ? Alignment.centerRight : Alignment.centerLeft,
 
       // We exclude mainScreen from ClipRRect because it already has borderRadius applied
       // Only mainScreen has Scale of 1 while others has < 1
