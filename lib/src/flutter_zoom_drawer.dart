@@ -480,12 +480,21 @@ class ZoomDrawerState extends State<ZoomDrawer> with SingleTickerProviderStateMi
 
     /// Rotation
     final rotationAngle = ((((angle ?? widget.angle) * pi) / 180) * _animationValue) * _slideDirection;
+    debugPrint('========================');
+    debugPrint('xPostition => $xPosition');
+    debugPrint('scalePercentage => $scalePercentage');
+    debugPrint('animationValue => $_animationValue');
+    debugPrint('_slideDirection => $_slideDirection');
+    debugPrint('slidePercent => $slidePercent');
+    debugPrint('rotationAngle => $rotationAngle');
+    debugPrint('radius => $radius');
+    debugPrint('========================\n\n');
 
     return Transform(
       transform: Matrix4.translationValues(xPosition, 0.0, 0.0)
         ..rotateZ(rotationAngle)
         ..scale(scalePercentage, scalePercentage),
-      alignment: widget.isRtl ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: widget.isRtl ? Alignment.centerRight : Alignment.bottomLeft,
 
       // We exclude mainScreen from ClipRRect because it already has borderRadius applied
       // Only mainScreen has Scale of 1 while others has < 1
