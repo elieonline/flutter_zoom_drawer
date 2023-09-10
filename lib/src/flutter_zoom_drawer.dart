@@ -40,6 +40,7 @@ class ZoomDrawer extends StatefulWidget {
     this.shadowLayer1Color,
     this.shadowLayer2Color,
     this.showShadow = false,
+    this.bottomShadow = false,
     this.openCurve = const Interval(0.0, 1.0, curve: Curves.easeOut),
     this.closeCurve = const Interval(0.0, 1.0, curve: Curves.easeOut),
     this.duration = const Duration(milliseconds: 250),
@@ -99,6 +100,9 @@ class ZoomDrawer extends StatefulWidget {
 
   /// Boolean, whether to show the drawer shadows - Applies to defaultStyle only
   final bool showShadow;
+
+  /// Boolean, whether to show the drawer shadows in bottom- Applies to defaultStyle only
+  final bool bottomShadow;
 
   /// Close drawer on android back button
   /// Note: This won't work if you are using WillPopScope in mainScreen,
@@ -483,7 +487,7 @@ class ZoomDrawerState extends State<ZoomDrawer> with SingleTickerProviderStateMi
 
     return Transform(
       transform: Matrix4.translationValues(xPosition, 0.0, 0.0)
-        ..rotateZ(-rotationAngle)
+        ..rotateZ(widget.bottomShadow ? -rotationAngle : rotationAngle)
         ..scale(scalePercentage, scalePercentage),
       alignment: widget.isRtl ? Alignment.centerRight : Alignment.centerLeft,
 
