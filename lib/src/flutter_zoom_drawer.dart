@@ -27,7 +27,7 @@ class ZoomDrawer extends StatefulWidget {
     this.slideWidth = 275.0,
     this.menuScreenWidth,
     this.borderRadius = 16.0,
-    this.angle = -12.0,
+    this.angle = 12.0,
     this.dragOffset = 60.0,
     this.openDragSensitivity = 425,
     this.closeDragSensitivity = 425,
@@ -55,7 +55,7 @@ class ZoomDrawer extends StatefulWidget {
     this.shrinkMainScreen = false,
     this.boxShadow,
     this.drawerStyleBuilder,
-  }) : assert(angle <= 0.0 && angle >= -30.0);
+  }) : assert(angle <= 30.0 && angle >= -30.0);
 
   /// Layout style
   final DrawerStyle style;
@@ -480,15 +480,6 @@ class ZoomDrawerState extends State<ZoomDrawer> with SingleTickerProviderStateMi
 
     /// Rotation
     final rotationAngle = ((((angle ?? widget.angle) * pi) / 180) * _animationValue) * _slideDirection;
-    debugPrint('========================');
-    debugPrint('xPostition => $xPosition');
-    debugPrint('scalePercentage => $scalePercentage');
-    debugPrint('animationValue => $_animationValue');
-    debugPrint('_slideDirection => $_slideDirection');
-    debugPrint('slidePercent => $slidePercent');
-    debugPrint('rotationAngle => $rotationAngle');
-    debugPrint('radius => $radius');
-    debugPrint('========================\n\n');
 
     return Transform(
       transform: Matrix4.translationValues(xPosition, 0.0, 0.0)
