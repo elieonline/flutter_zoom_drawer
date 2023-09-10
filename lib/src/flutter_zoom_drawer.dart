@@ -482,8 +482,8 @@ class ZoomDrawerState extends State<ZoomDrawer> with SingleTickerProviderStateMi
     final rotationAngle = ((((angle ?? widget.angle) * pi) / 180) * _animationValue) * _slideDirection;
 
     return Transform(
-      transform: Matrix4.translationValues(xPosition, 0.0, 0.0)
-        ..rotateZ(rotationAngle)
+      transform: Matrix4.translationValues(-xPosition, 0.0, 0.0)
+        ..rotateZ(-rotationAngle)
         ..scale(scalePercentage, scalePercentage),
       alignment: widget.isRtl ? Alignment.centerRight : Alignment.centerLeft,
 
