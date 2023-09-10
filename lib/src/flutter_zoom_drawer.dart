@@ -47,7 +47,7 @@ class ZoomDrawer extends StatefulWidget {
     this.androidCloseOnBackTap = false,
     this.moveMenuScreen = true,
     this.disableDragGesture = false,
-    this.isRtl = true,
+    this.isRtl = false,
     this.clipMainScreen = true,
     this.mainScreenTapClose = false,
     this.menuScreenTapClose = false,
@@ -187,12 +187,10 @@ class ZoomDrawer extends StatefulWidget {
   ZoomDrawerState createState() => ZoomDrawerState();
 
   /// static function to provide the drawer state
-  static ZoomDrawerState? of(BuildContext context) =>
-      context.findAncestorStateOfType<ZoomDrawerState>();
+  static ZoomDrawerState? of(BuildContext context) => context.findAncestorStateOfType<ZoomDrawerState>();
 }
 
-class ZoomDrawerState extends State<ZoomDrawer>
-    with SingleTickerProviderStateMixin {
+class ZoomDrawerState extends State<ZoomDrawer> with SingleTickerProviderStateMixin {
   /// Triggers drag animation
   bool _shouldDrag = false;
 
@@ -204,8 +202,7 @@ class ZoomDrawerState extends State<ZoomDrawer>
   late final ValueNotifier<bool> _absorbingMainScreen;
 
   /// Drawer state
-  final ValueNotifier<DrawerState> _stateNotifier =
-      ValueNotifier(DrawerState.closed);
+  final ValueNotifier<DrawerState> _stateNotifier = ValueNotifier(DrawerState.closed);
 
   ValueNotifier<DrawerState> get stateNotifier => _stateNotifier;
 
@@ -229,21 +226,15 @@ class ZoomDrawerState extends State<ZoomDrawer>
   /// Decides if drag animation should start according to dragOffset
   void _onHorizontalDragStart(DragStartDetails startDetails) {
     // Offset required to to open drawer
-    final maxDragSlide = widget.isRtl
-        ? context.screenWidth - widget.dragOffset
-        : widget.dragOffset;
+    final maxDragSlide = widget.isRtl ? context.screenWidth - widget.dragOffset : widget.dragOffset;
 
     // Will help us to set the offset according to RTL value
     // Without this user can open the drawer without respecing initial offset required
-    final toggleValue = widget.isRtl
-        ? _animationController.isCompleted
-        : _animationController.isDismissed;
+    final toggleValue = widget.isRtl ? _animationController.isCompleted : _animationController.isDismissed;
 
-    final isDraggingFromLeft =
-        toggleValue && startDetails.globalPosition.dx < maxDragSlide;
+    final isDraggingFromLeft = toggleValue && startDetails.globalPosition.dx < maxDragSlide;
 
-    final isDraggingFromRight =
-        !toggleValue && startDetails.globalPosition.dx > maxDragSlide;
+    final isDraggingFromRight = !toggleValue && startDetails.globalPosition.dx > maxDragSlide;
 
     _shouldDrag = isDraggingFromLeft || isDraggingFromRight;
   }
@@ -252,15 +243,12 @@ class ZoomDrawerState extends State<ZoomDrawer>
   void _onHorizontalDragUpdate(DragUpdateDetails updateDetails) {
     /// Drag animation can be triggered when _shouldDrag is true,
     /// or when DrawerState is opening or closing
-    if (_shouldDrag == false &&
-        ![DrawerState.opening, DrawerState.closing]
-            .contains(_stateNotifier.value)) {
+    if (_shouldDrag == false && ![DrawerState.opening, DrawerState.closing].contains(_stateNotifier.value)) {
       return;
     }
 
-    final dragSensitivity = drawerLastAction == DrawerLastAction.open
-        ? widget.closeDragSensitivity
-        : widget.openDragSensitivity;
+    final dragSensitivity =
+        drawerLastAction == DrawerLastAction.open ? widget.closeDragSensitivity : widget.openDragSensitivity;
 
     final delta = updateDetails.primaryDelta ?? 0 / widget.dragOffset;
 
@@ -290,8 +278,7 @@ class ZoomDrawerState extends State<ZoomDrawer>
 
     if (willFling) {
       // Strong swipe will cause the animation continue to its destination
-      final visualVelocityInPx = dragEndDetails.velocity.pixelsPerSecond.dx /
-          (context.screenWidth * 50);
+      final visualVelocityInPx = dragEndDetails.velocity.pixelsPerSecond.dx / (context.screenWidth * 50);
 
       final visualVelocityInPxRTL = -visualVelocityInPx;
 
@@ -362,8 +349,7 @@ class ZoomDrawerState extends State<ZoomDrawer>
   TickerFuture? toggle({bool forceToggle = false}) {
     /// We use DrawerLastAction instead of DrawerState,
     /// because on draging, Drawer state is always equal to DrawerState.opening
-    if (stateNotifier.value == DrawerState.open ||
-        (forceToggle && drawerLastAction == DrawerLastAction.open)) {
+    if (stateNotifier.value == DrawerState.open || (forceToggle && drawerLastAction == DrawerLastAction.open)) {
       return close();
     } else if (stateNotifier.value == DrawerState.closed ||
         (forceToggle && drawerLastAction == DrawerLastAction.closed)) {
@@ -390,16 +376,14 @@ class ZoomDrawerState extends State<ZoomDrawer>
       /// emitted with forward & reverse for the same action
       /// Adding a check to determine if the drawer is in the process of opening or closing
       case AnimationStatus.forward:
-        if (drawerLastAction == DrawerLastAction.open &&
-            _animationController.value < 1) {
+        if (drawerLastAction == DrawerLastAction.open && _animationController.value < 1) {
           _stateNotifier.value = DrawerState.closing;
         } else {
           _stateNotifier.value = DrawerState.opening;
         }
         break;
       case AnimationStatus.reverse:
-        if (drawerLastAction == DrawerLastAction.closed &&
-            _animationController.value > 0) {
+        if (drawerLastAction == DrawerLastAction.closed && _animationController.value > 0) {
           _stateNotifier.value = DrawerState.opening;
         } else {
           _stateNotifier.value = DrawerState.closing;
@@ -477,20 +461,16 @@ class ZoomDrawerState extends State<ZoomDrawer>
         break;
       case DrawerState.opening:
         slidePercent = (widget.openCurve).transform(_animationValue);
-        scalePercent = Interval(0.0, 0.3, curve: widget.openCurve)
-            .transform(_animationValue);
+        scalePercent = Interval(0.0, 0.3, curve: widget.openCurve).transform(_animationValue);
         break;
       case DrawerState.closing:
         slidePercent = (widget.closeCurve).transform(_animationValue);
-        scalePercent = Interval(0.0, 1.0, curve: widget.closeCurve)
-            .transform(_animationValue);
+        scalePercent = Interval(0.0, 1.0, curve: widget.closeCurve).transform(_animationValue);
         break;
     }
 
     /// Sliding
-    final xPosition =
-        ((widget.slideWidth - slide) * _animationValue * _slideDirection) *
-            slidePercent;
+    final xPosition = ((widget.slideWidth - slide) * _animationValue * _slideDirection) * slidePercent;
 
     /// Scale
     final scalePercentage = scale - (widget.mainScreenScale * scalePercent);
@@ -499,9 +479,7 @@ class ZoomDrawerState extends State<ZoomDrawer>
     final radius = widget.borderRadius * _animationValue;
 
     /// Rotation
-    final rotationAngle =
-        ((((angle ?? widget.angle) * pi) / 180) * _animationValue) *
-            _slideDirection;
+    final rotationAngle = ((((angle ?? widget.angle) * pi) / 180) * _animationValue) * _slideDirection;
 
     return Transform(
       transform: Matrix4.translationValues(xPosition, 0.0, 0.0)
@@ -536,10 +514,7 @@ class ZoomDrawerState extends State<ZoomDrawer>
           // By default menuScreen width is calculated based on slideWidth
           // Unless user set menuScreenWidth
           child: SizedBox(
-            width: widget.menuScreenWidth ??
-                widget.slideWidth -
-                    (context.screenWidth / widget.slideWidth) -
-                    50,
+            width: widget.menuScreenWidth ?? widget.slideWidth - (context.screenWidth / widget.slideWidth) - 50,
             child: widget.menuScreen,
           ),
         ),
@@ -590,8 +565,7 @@ class ZoomDrawerState extends State<ZoomDrawer>
 
     // Add layer - Shrink Screen
     if (widget.shrinkMainScreen) {
-      final mainSize =
-          context.screenWidth - (widget.slideWidth * _animationValue);
+      final mainSize = context.screenWidth - (widget.slideWidth * _animationValue);
       mainScreen = SizedBox(
         width: mainSize,
         child: mainScreen,
@@ -644,13 +618,10 @@ class ZoomDrawerState extends State<ZoomDrawer>
 
     // Add layer - Angle
     if (widget.angle != 0 && widget.style != DrawerStyle.defaultStyle) {
-      final rotationAngle =
-          (((widget.angle) * pi * _slideDirection) / 180) * _animationValue;
+      final rotationAngle = (((widget.angle) * pi * _slideDirection) / 180) * _animationValue;
       mainScreen = Transform.rotate(
         angle: rotationAngle,
-        alignment: widget.isRtl
-            ? AlignmentDirectional.topEnd
-            : AlignmentDirectional.topStart,
+        alignment: widget.isRtl ? AlignmentDirectional.topEnd : AlignmentDirectional.topStart,
         child: mainScreen,
       );
     }
@@ -814,8 +785,7 @@ class ZoomDrawerState extends State<ZoomDrawer>
       parentWidget = WillPopScope(
         onWillPop: () async {
           // Case drawer is opened or will open, either way will close
-          if ([DrawerState.open, DrawerState.opening]
-              .contains(stateNotifier.value)) {
+          if ([DrawerState.open, DrawerState.opening].contains(stateNotifier.value)) {
             close();
             return false;
           }

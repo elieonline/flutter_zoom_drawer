@@ -34,14 +34,14 @@ class StyleDefaultWidget extends StatelessWidget {
     const slidePercent = 15.0;
 
     return Stack(
+      alignment: AlignmentDirectional.bottomStart,
       children: [
         menuScreenWidget,
         if (showShadow) ...[
           /// Displaying the first shadow
           applyDefaultStyle(
             Container(
-              color: shadowLayer1Color ??
-                  drawerShadowsBackgroundColor.withAlpha(60),
+              color: shadowLayer1Color ?? drawerShadowsBackgroundColor.withAlpha(60),
             ),
             angle: (angle == 0.0) ? 0.0 : angle - 8,
             scale: .9,
@@ -51,8 +51,7 @@ class StyleDefaultWidget extends StatelessWidget {
           /// Displaying the second shadow
           applyDefaultStyle(
             Container(
-              color: shadowLayer2Color ??
-                  drawerShadowsBackgroundColor.withAlpha(180),
+              color: shadowLayer2Color ?? drawerShadowsBackgroundColor.withAlpha(180),
             ),
             angle: (angle == 0.0) ? 0.0 : angle - 4.0,
             scale: .95,
